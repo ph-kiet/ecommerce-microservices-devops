@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         AWS_REGION = "ap-southeast-2"
-        AWS_ACCOUNT_ID = credentials("AWS_ACCOUNT_ID")
+        AWS_ACCOUNT_ID = "412381745022"
         AWS_ECR_REGISTRY = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
         
         CLIENT_REPO_NAME = "ecommerce-cicd-project/client"
@@ -30,6 +30,7 @@ pipeline {
                         changeset "client/**"
                     }
                     steps {
+                        echo "************************ Client ************************"
                         sh "docker build -t ${CLIENT_REPO_URL}:latest ./client"
                         sh "docker push ${CLIENT_REPO_URL}:latest"
                     }
@@ -40,6 +41,7 @@ pipeline {
                         changeset "product-service/**"
                     }
                     steps {
+                        echo "************************ Product Service ************************"
                         sh "docker build -t ${PRODUCT_SERVICE_REPO_URL}:latest ./product-service"
                         sh "docker push ${PRODUCT_SERVICE_REPO_URL}:latest"
                     }
@@ -50,6 +52,7 @@ pipeline {
                         changeset "checkout-service/**"
                     }
                     steps {
+                        echo "************************ Checkout Service ************************"
                         sh "docker build -t ${CHECKOUT_SERVICE_REPO_URL}:latest ./checkout-service"
                         sh "docker push ${CHECKOUT_SERVICE_REPO_URL}:latest"
                     }
