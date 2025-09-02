@@ -13,21 +13,21 @@ pipeline {
     stages {
         stage ("Build Docker Image") {
             steps {
-                sh 'docker build -t $CLIENT_REPO_URL:latest ./client'
+                sh 'docker build -t ${CLIENT_REPO_URL}:latest ./client'
             }
         }
 
         stage ("Push Image To ECR") {
             steps {
-                sh 'aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ECR_REGISTRY'
-                sh 'docker push $CLIENT_REPO_URL:latest'
+                sh 'aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY}'
+                sh 'docker push ${CLIENT_REPO_URL}:latest'
             }
         }
     }
 
     post {
         always {
-            sh 'docker logout $AWS_ECR_REGISTRY'
+            sh 'docker logout ${AWS_ECR_REGISTRY}'
         }
     }
 }
