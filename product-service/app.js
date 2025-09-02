@@ -1,6 +1,6 @@
 import express from "express";
 import { Pool } from "pg";
-import Redis from "redis";
+import Redis from "ioredis";
 import dotenv from "dotenv";
 
 dotenv.config({ quiet: true });
@@ -9,7 +9,16 @@ const app = express();
 app.use(express.json());
 
 const pgPool = new Pool({ connectionString: process.env.PG_URL }); // RDS Postgresql Connection
-const redisClient = Redis.createClient({ url: process.env.REDIS_URL }); // Elasticache Redis Connection
+// const redisClient = Redis.createClient({ url: process.env.REDIS_URL }); // Elasticache Redis Connection
+const redisClient = new Redis.Cluster(
+  [{ host: process.env.REDIS_ENDPOINT, port: 6379 }],
+  {
+    dnsLookup: (address, callback) => callback(null, address),
+    redisOptions: {
+      tls: {},
+    },
+  }
+);
 
 redisClient.connect();
 
