@@ -20,8 +20,6 @@ const redisClient = new Redis.Cluster(
   }
 );
 
-redisClient.connect();
-
 // Product Search Endpoint
 app.get("/products", async (req, res) => {
   const search = req.query.search || "";
