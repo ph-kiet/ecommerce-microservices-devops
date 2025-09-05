@@ -26,9 +26,9 @@ pipeline {
         stage ("Build Docker Images & Push To ECR") {
             parallel {
                 stage ("Client") {
-                    when {
-                        changeset "client/**"
-                    }
+                    // when {
+                    //     changeset "client/**"
+                    // }
                     steps {
                         echo "************************ Client ************************"
                         sh "docker build -t ${CLIENT_REPO_URL}:latest ./client"
@@ -37,9 +37,9 @@ pipeline {
                 }
 
                 stage ("Product Service") {
-                    when {
-                        changeset "product-service/**"
-                    }
+                    // when {
+                    //     changeset "product-service/**"
+                    // }
                     steps {
                         echo "************************ Product Service ************************"
                         sh "docker build -t ${PRODUCT_SERVICE_REPO_URL}:latest ./product-service"
@@ -48,9 +48,9 @@ pipeline {
                 }
 
                 stage ("Checkout Service") {
-                    when {
-                        changeset "checkout-service/**"
-                    }
+                    // when {
+                    //     changeset "checkout-service/**"
+                    // }
                     steps {
                         echo "************************ Checkout Service ************************"
                         sh "docker build -t ${CHECKOUT_SERVICE_REPO_URL}:latest ./checkout-service"
