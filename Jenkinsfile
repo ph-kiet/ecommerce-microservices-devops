@@ -14,6 +14,11 @@ pipeline {
 
         CHECKOUT_SERVICE_REPO_NAME = "ecommerce-cicd-project/checkout-service"
         CHECKOUT_SERVICE_REPO_URL = "${AWS_ECR_REGISTRY}/${CHECKOUT_SERVICE_REPO_NAME}"
+
+        CLUSTER_NAME = "ecommerce-cicd-project"
+        CLIENT_SERVICE = "ecommerce-client-service"
+        PRODUCT_SERVICE = "ecommerce-product-service"
+        CHECKOUT_SERVICE = "ecommerce-checkout-service"
     }
 
     stages {
@@ -58,7 +63,41 @@ pipeline {
                     }
                 }
             }
-        }        
+        }
+
+        stage ("Deploy") {
+            parallel {
+                stage ("Client") {
+                    when {
+                        changeset "client/**"
+                    }
+                    steps {
+                        echo "************************ Client ************************"
+                         sh "aws ecs update-service --cluster ${CLUSTER_NAME} --service ${CLIENT_SERVICE} --force-new-deployment"
+                    }
+                }
+
+                stage ("Product Service") {
+                    when {
+                        changeset "product-service/**"
+                    }
+                    steps {
+                        echo "************************ Product Service ************************"
+                        sh "aws ecs update-service --cluster ${CLUSTER_NAME} --service ${PRODUCT_SERVICE} --force-new-deployment"
+                    }
+                }
+
+                stage ("Checkout Service") {
+                    when {
+                        changeset "checkout-service/**"
+                    }
+                    steps {
+                        echo "************************ Checkout Service ************************"
+                        sh "aws ecs update-service --cluster ${CLUSTER_NAME} --service ${CHECKOUT_SERVICE} --force-new-deployment"
+                    }
+                }
+            }
+        }
     }
 
     post {
