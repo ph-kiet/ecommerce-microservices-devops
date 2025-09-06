@@ -16,7 +16,7 @@ app.get("/products", async (req, res) => {
   let query = `SELECT * FROM products WHERE name ILIKE $1`;
 
   if (!search) {
-    query += ` LIMIT 10;`;
+    query += ` LIMIT 5;`;
   }
 
   const { rows } = await pgPool.query(query, [`%${search}%`]);
