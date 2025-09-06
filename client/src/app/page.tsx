@@ -13,7 +13,7 @@ export default async function Home({ searchParams }: HomeProps) {
   return (
     <>
       <h1 className="text-2xl font-bold mb-10 text-center">
-        E-Commerce Microservices DevOps Project.
+        E-Commerce Microservices DevOps Project
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
